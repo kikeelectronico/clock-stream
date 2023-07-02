@@ -9,7 +9,6 @@ ENVIROMENT = os.environ.get("ENVIROMENT", "develop")
 YOUTUBE_STREAM_KEY = os.environ.get("YOUTUBE_STREAM_KEY", "")
 
 cap = cv2.VideoCapture("video_loop.mp4")
-VIDEO_SOURCE = "video_loop.mp4"
 
 output_params = {
     "-clones": ["-f", "lavfi", "-i", "anullsrc"],
@@ -23,7 +22,7 @@ output_params = {
 
 writer = WriteGear(
     output="rtmp://a.rtmp.youtube.com/live2/{}".format(YOUTUBE_STREAM_KEY),
-    logging=True,
+    logging=False,
     **output_params
 )
 
@@ -55,6 +54,8 @@ def addOverlay(frame):
     new_frame = cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0)
     return new_frame
 
+last_frame = None
+
 while cap.isOpened():
     ret,frame = cap.read()
     if ret:
@@ -62,6 +63,7 @@ while cap.isOpened():
         new_frame = addOverlay(frame)
         time_string = getTime()
         writeText(new_frame, time_string)
+        last_frame = new_frame
         if ENVIROMENT == "production":
             writer.write(new_frame)
         else:
@@ -69,11 +71,13 @@ while cap.isOpened():
             cv2.imshow("output", show_frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-        wait_time = (1/30) - (time.time() - frame_time_start)
+        wait_time = (1/26) - (time.time() - frame_time_start)
         if wait_time < 0:
             wait_time = 0.001
         time.sleep(wait_time)
     else:
+        if ENVIROMENT == "production":
+            writer.write(last_frame)
         cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
         continue
     
