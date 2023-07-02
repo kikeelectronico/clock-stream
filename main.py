@@ -65,7 +65,6 @@ while cap.isOpened():
         if ENVIROMENT == "production":
             writer.write(new_frame)
         else:
-            writer.write(new_frame)
             show_frame = cv2.resize(new_frame, (960, 540))
             cv2.imshow("output", show_frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
