@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  atlas-proxy:
+  clock-stream:
     image: ghcr.io/kikeelectronico/clock-stream:latest
     restart: always
     environment:
