@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+
+  atlas-proxy:
+    image: ghcr.io/kikeelectronico/clock-stream:latest
+    restart: always
+    environment:
+      - ENVIROMENT=production
+      - YOUTUBE_STREAM_KEY=05jq-f276-e6cq-mp9k-3zpm
