@@ -1,2 +1,2 @@
-vidgear
-opencv-python
+vidgear==0.3.0
+opencv-python==4.8.0.74
