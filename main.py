@@ -1,5 +1,4 @@
 from vidgear.gears import WriteGear
-from vidgear.gears import CamGear
 import cv2
 import time
 import os
